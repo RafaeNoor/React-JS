@@ -91,16 +91,7 @@ class Board extends React.Component {
       case 39:
         console.log('Right Shift');
         for(let i = 0;i<16;i++){
-          let j;
-          if(i <= 3){
-            j = 3;
-          } else if(i <= 7) {
-            j = 7;
-          } else if(i <= 11){
-            j = 7;
-          } else {
-            j = 15;
-          }
+          let j = i + (4-i%4)-1;
           newBoard[j] += copyBoard[i];
         }
         break;
@@ -122,7 +113,7 @@ class Board extends React.Component {
     while(!emptySpace){
       let rand = Math.floor(Math.random()*16);
       if(newBoard[rand] === 0){
-        newBoard[rand] += 2;
+        //newBoard[rand] += 2;
         emptySpace = true;
       }
     }
