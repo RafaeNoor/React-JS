@@ -113,7 +113,7 @@ class Board extends React.Component {
     while(!emptySpace){
       let rand = Math.floor(Math.random()*16);
       if(newBoard[rand] === 0){
-        //newBoard[rand] += 2;
+        newBoard[rand] += 2;
         emptySpace = true;
       }
     }
