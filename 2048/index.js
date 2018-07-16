@@ -10,7 +10,6 @@ function randomBoard(){
     
     rndBrd[index] += 2;
   }
-
   return rndBrd;
 }
 
@@ -19,9 +18,9 @@ let e = React.createElement;
 
 class Square extends React.Component {
   render() {
-    return e('div',{className : "square",},
+    return e('div',{className : "square",}
       //onClick : this.props.onClick,},
-      `${this.props.value || ''}`);
+      ,`${this.props.value || ''}`);
   }
 }
 
@@ -64,13 +63,10 @@ class Board extends React.Component {
     });
   }
   
-  
-  
-  
   handleKeyPress(evt){
     let copyBoard = this.state.board.slice();
 
-    let newBoard = Array(16).fill(0);
+    /*let newBoard = Array(16).fill(0);
 
     switch(evt.keyCode){
       case 65:
@@ -107,7 +103,9 @@ class Board extends React.Component {
         }
         break;
       
-    }
+    }*/
+
+    let newBoard = game2048(copyBoard,evt.keyCode);
     
     let emptySpace = false;
     while(!emptySpace){
@@ -127,13 +125,93 @@ class Board extends React.Component {
   }
 }
 
-let myBoard = e(Board,{},null);
-
 
 ReactDOM.render(
  e(Board,{},null) 
   ,document.getElementById('root')
 );
+
+
+function game2048(board,keyCode){
+  let newBoard = Array(16).fill(0);
+  newBoard = board;
+  switch(keyCode){
+    case 65:
+    case 37: 
+      console.log('Left Shift');
+      for(let i = 15;i>=0;i--){
+        if(i%4!=0){  //non left most column
+          if(board[i] && board[i] == board[i-1]){
+            newBoard[i-1] = board[i]*2;
+            newBoard[i] = 0;
+            board[i] = 0;
+          } else if(board[i-1] == 0) {
+            newBoard[i-1] = board[i];
+            board[i] = 0;
+          }
+        }
+      }
+      break;
+    case 87:
+    case 38:
+      console.log('Up Shift');
+      for(let i = 15;i>=0;i--){
+        if(i>3){
+          if(board[i] && board[i-4] == board[i]){
+            newBoard[i-4] = board[i-4]*2;
+            newBoard[i] = 0;
+            board[i] = 0;
+
+          } else if(board[i-4] == 0){
+            newBoard[i-4] = board[i];
+            board[i] = 0;
+          }
+        }
+      }
+      break;
+    case 68:
+    case 39:
+      console.log('Right Shift');
+      for(let i = 0;i<16;i++){
+        let j = i + (4-i%4)-1;
+        if(i != j){// not right most column
+          if(board[i] && board[i+1] == board[i]){
+            newBoard[i+1] = board[i+1]*2;
+            //newBoard[i] = 0;
+            board[i] = 0; 
+          } else if( board[i+1] == 0){
+            newBoard[i+1] = board[i];
+            board[i] = 0;
+          }
+        }
+      }
+      break;
+    case 83:
+    case 40:
+      console.log('Down Shift')
+      for(let i = 0;i<16;i++){
+        //let j = i;
+        //while(j<12){
+        //  j+=4
+        //}
+        if(i < 12){
+          if(board[i] && board[i+4] == board[i]){
+            newBoard[i+4] = board[i+4]*2;
+            board[i] = 0;
+            newBoard[i] = 0;
+          } else if( board[i+4] == 0){
+            newBoard[i+4] = board[i];
+            board[i] = 0;
+          }
+        }
+      }
+      break;
+    
+  }
+
+  return newBoard;
+}
+
 
 
 
